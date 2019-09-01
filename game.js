@@ -26,8 +26,20 @@ var game = function() {
 
 	this.listenEvent = function() {
 		this.canvas.addEventListener('click', function(event) {
-			console.log($('#container canvas').offset());
+			let left = $('#container canvas').offset().left;
+			let top = $('#container canvas').offset().top;
+			let x = event.clientX;
+			let y = event.clientY;
+			x -= left;
+			y -= top;
+			x = Math.floor(x / DOT_SIZE);
+			y = Math.floor(y / DOT_SIZE);
+			self.update(y, x);
 		})
+	}
+
+	this.update = function(x, y) {
+		this.quan.update(x, y);
 	}
 
 	this.drawBoard = function() {
@@ -50,11 +62,11 @@ var game = function() {
 		for(let i = 0; i <= 7; i++) {
 			for(let j = 0; j <= 7; j++) {
 				if((i + j) % 2 == 0) {
-					this.context.fillStyle = '#FF2708';
+					this.context.fillStyle = '#AD1A05';
 					this.context.fillRect(i * DOT_SIZE, j * DOT_SIZE, DOT_SIZE, DOT_SIZE);
 				}
 				else {
-					this.context.fillStyle = '#F0CE40';
+					this.context.fillStyle = '#B49305';
 					this.context.fillRect(i * DOT_SIZE, j * DOT_SIZE, DOT_SIZE, DOT_SIZE);
 				}
 			}
