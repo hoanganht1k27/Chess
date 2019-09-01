@@ -25,6 +25,8 @@ var quan = function(game) {
 		y: 0,
 		turn: -1
 	}
+	this.whiteCheckMate = 0;
+	this.blackCheckMate = 0;
 
 	var self = this;
 
@@ -140,6 +142,7 @@ var quan = function(game) {
 			img.onload = function() {
 				self.game.context.drawImage(img, self.black[i].x * DOT_SIZE, 7 * DOT_SIZE);
 				self.character[7][self.black[i].x] = img;
+				self.black[i].img = img;
 			}
 			this.state[7][this.black[i].x] = this.black[i].type;
 		}
@@ -189,6 +192,24 @@ var quan = function(game) {
 		}
 	}
 
+	this.promote = function() {
+		let id = 0;
+		let promote = prompt('Which one do you want to promote? (queen, rook, knight, bishop)');
+		if(promote == 'queen') {
+			id = 6;
+		}
+		if(promote == 'rook') {
+			id = 3;
+		}
+		if(promote == 'knight') {
+			id = 4;
+		}
+		if(promote == 'bishop') {
+			id = 1;
+		}
+		return id;
+	}
+
 	this.update = function(x, y) {
 	    let turn = this.on.turn;
 		if(this.available[x][y] > 0) {
@@ -197,6 +218,22 @@ var quan = function(game) {
 			this.state[x][y] = this.state[u][v];
 			this.state[u][v] = 0;
 			this.character[u][v] = null;
+			if(turn == -1 && this.state[x][y] == 16) {
+				if(x == 7) {
+					let id = this.promote();
+
+					this.character[x][y] = this.white[id].img;
+					this.state[x][y] = this.white[id].type + 10;
+				}
+			}
+			if(turn == 1 && this.state[x][y] == 6) {
+				if(x == 0) {
+					let id = this.promote();
+
+					this.character[x][y] = this.black[id].img;
+					this.state[x][y] = this.black[id].type;
+				}
+			}
 			this.resetAvailable();
 			this.checkWin();
 			this.on.turn *= -1;
@@ -375,6 +412,11 @@ var quan = function(game) {
 			if(y <= 6 && this.state[x - 1][y + 1] > 10) {
 				this.available[x - 1][y + 1] = 2;
 			} 
+			if(x == 6) {
+				if(this.state[x - 2][y] == 0) {
+					this.available[x - 2][y] = 1;
+				}
+			}
 		}
 		else {
 			if(this.state[x + 1][y] == 0) {
@@ -385,6 +427,11 @@ var quan = function(game) {
 			}
 			if(y >= 1 && this.state[x + 1][y - 1] < 10 && this.state[x + 1][y - 1] > 0) {
 				this.available[x + 1][y - 1] = 2;
+			}
+			if(x == 1) {
+				if(this.state[x + 2][y] == 0) {
+					this.available[x + 2][y] = 1;
+				}
 			}
 		}
 	}
