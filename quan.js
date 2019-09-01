@@ -310,6 +310,9 @@ var quan = function(game) {
 			this.resetAvailable();
 			this.checkWin();
 			this.on.turn *= -1;
+			let tx = $('#notice').html();
+			if(tx == "White turn") $('#notice').html('Black turn');
+			else $('#notice').html('White turn');
 			return;
 		}
 
@@ -355,8 +358,12 @@ var quan = function(game) {
 					this.game.context.fillStyle = '#157905';
 					this.game.context.fillRect(j * DOT_SIZE, i * DOT_SIZE, DOT_SIZE, DOT_SIZE);
 				}
-				else {
+				else if(this.available[i][j] == 2) {
 					this.game.context.fillStyle = '#053EA2';
+					this.game.context.fillRect(j * DOT_SIZE, i * DOT_SIZE, DOT_SIZE, DOT_SIZE);
+				}
+				else {
+					this.game.context.fillStyle = '#AA05B2';
 					this.game.context.fillRect(j * DOT_SIZE, i * DOT_SIZE, DOT_SIZE, DOT_SIZE);
 				}
 
