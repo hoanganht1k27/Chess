@@ -27,6 +27,10 @@ var quan = function(game) {
 	}
 	this.whiteCheckMate = 0;
 	this.blackCheckMate = 0;
+	this.checkWhiteCastle = 1;
+	this.checkBlackCastle = 1;
+	this.checkWhiteQueensideCastle = 1;
+	this.checkBlackQueensideCastle = 1;
 
 	var self = this;
 
@@ -210,14 +214,83 @@ var quan = function(game) {
 		return id;
 	}
 
+	this.whiteCastle = function() {
+		if(!this.checkWhiteCastle) return false;
+		if(this.state[0][5] > 0 || this.state[0][6] > 0) return false;
+		return true;
+	}
+
+	this.blackCastle = function() {
+		if(!this.checkBlackCastle) return false;
+		if(this.state[7][5] > 0 || this.state[7][6] > 0) return false;
+		return true;
+	}
+
+	this.blackQueensideCastle = function() {
+		if(!this.checkBlackQueensideCastle) return false;
+		if(this.state[7][1] || this.state[7][2] || this.state[7][3]) return false;
+		return true;
+	}
+
+	this.whiteQueensideCastle = function() {
+		if(!this.checkWhiteQueensideCastle) return false;
+		if(this.state[0][1] || this.state[0][2] || this.state[0][3]) return false;
+		return true;
+	}
+
+	this.move = function(x, y, u, v) {
+		this.character[x][y] = this.character[u][v];
+		this.state[x][y] = this.state[u][v];
+		this.state[u][v] = 0;
+		this.character[u][v] = null;
+	}
+
 	this.update = function(x, y) {
 	    let turn = this.on.turn;
 		if(this.available[x][y] > 0) {
 			let u = this.on.x, v = this.on.y;
-			this.character[x][y] = this.character[u][v];
-			this.state[x][y] = this.state[u][v];
-			this.state[u][v] = 0;
-			this.character[u][v] = null;
+			this.move(x, y, u, v);
+			if(this.available[x][y] == 3) {
+				if(x == 0 && y == 6) {
+					this.move(0, 5, 0, 7);
+				}
+				if(x == 0 && y == 2) {
+					this.move(0, 3, 0, 0);
+				}
+				if(x == 7 && y == 6) {
+					this.move(7, 5, 7, 7);
+				}
+				if(x == 7 && y == 2) {
+					this.move(7, 3, 7, 0);
+				}
+			}
+
+			if(u == 0 && v == 4) {
+				this.checkWhiteCastle = 0;
+				this.checkWhiteQueensideCastle = 0;
+			}
+
+			if(u == 0 && v == 7) {
+				this.checkWhiteCastle = 0;
+			}
+
+			if(u == 0 && v == 0) {
+				this.checkWhiteQueensideCastle = 0;
+			}
+
+			if(u == 7 && v == 4) {
+				this.checkBlackCastle = 0;
+				this.checkBlackQueensideCastle = 0;
+			}
+
+			if(u == 7 && v == 7) {
+				this.checkBlackCastle = 0;
+			}
+
+			if(u == 7 && v == 0) {
+				this.checkBlackQueensideCastle = 0;
+			}
+
 			if(turn == -1 && this.state[x][y] == 16) {
 				if(x == 7) {
 					let id = this.promote();
@@ -399,6 +472,22 @@ var quan = function(game) {
 				}
 			}
 		})
+		if(turn == 1) {
+			if(this.blackCastle()) {
+				this.available[7][6] = 3;
+			}
+			if(this.blackQueensideCastle()) {
+				this.available[7][2] = 3;
+			}
+		}
+		else {
+			if(this.whiteCastle()) {
+				this.available[0][6] = 3;
+			}
+			if(this.whiteQueensideCastle()) {
+				this.available[0][2] = 3;
+			}
+		}
 	}
 
 	this.updatePawn = function(x, y, turn) {
