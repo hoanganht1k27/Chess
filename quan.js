@@ -113,7 +113,7 @@ var quan = function(game) {
 		for(let i = 0;i <= 7; i++) {
 			let img = new Image();
 			img.onload = function() {
-				self.game.context.drawImage(img, self.white[i].x * DOT_SIZE, 0);
+				self.game.context.drawImage(img, self.white[i].x * DOT_SIZE + KC, KC);
 				self.character[0][self.white[i].x] = img;
 			}
 			img.src = 'images/' + self.white[i].src;
@@ -125,7 +125,7 @@ var quan = function(game) {
 		pawnWhite.src = 'images/pawn-white.png';
 		pawnWhite.onload = function() {
 			for(let i = 0; i <= 7; i++) {
-				self.game.context.drawImage(pawnWhite, i * DOT_SIZE, DOT_SIZE);
+				self.game.context.drawImage(pawnWhite, i * DOT_SIZE + KC, DOT_SIZE + KC);
 				self.state[1][i] = 16;
 				self.character[1][i] = pawnWhite;
 			}
@@ -144,7 +144,7 @@ var quan = function(game) {
 			let img = new Image();
 			img.src = this.black[i].src;
 			img.onload = function() {
-				self.game.context.drawImage(img, self.black[i].x * DOT_SIZE, 7 * DOT_SIZE);
+				self.game.context.drawImage(img, self.black[i].x * DOT_SIZE + KC, 7 * DOT_SIZE + KC);
 				self.character[7][self.black[i].x] = img;
 				self.black[i].img = img;
 			}
@@ -155,7 +155,7 @@ var quan = function(game) {
 		pawn.src = 'images/pawn.png';
 		pawn.onload = function() {
 			for(let i = 0; i <= 7; i++) {
-				self.game.context.drawImage(pawn, i * DOT_SIZE, 6 * DOT_SIZE);
+				self.game.context.drawImage(pawn, i * DOT_SIZE + KC, 6 * DOT_SIZE + KC);
 				self.state[6][i] = 6;
 				self.character[6][i] = pawn;
 			}
@@ -175,7 +175,7 @@ var quan = function(game) {
 					this.game.context.fillRect(j * DOT_SIZE, i * DOT_SIZE, DOT_SIZE, DOT_SIZE);
 				}
 				if(this.character[i][j] != null)
-				this.game.context.drawImage(this.character[i][j], j * DOT_SIZE, i * DOT_SIZE);
+				this.game.context.drawImage(this.character[i][j], j * DOT_SIZE + KC, i * DOT_SIZE + KC);
 			}
 		}
 	}
@@ -368,7 +368,7 @@ var quan = function(game) {
 				}
 
 				if(this.character[i][j] != null)
-				this.game.context.drawImage(this.character[i][j], j * DOT_SIZE, i * DOT_SIZE);
+				this.game.context.drawImage(this.character[i][j], j * DOT_SIZE + KC, i * DOT_SIZE + KC);
 			}
 		}
 	}

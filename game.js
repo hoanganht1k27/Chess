@@ -1,6 +1,7 @@
-const GAME_WIDTH = 320;
-const GAME_HEIGHT = 320;
-const DOT_SIZE = 40;
+const GAME_WIDTH = 400;
+const GAME_HEIGHT = 400;
+const DOT_SIZE = 50;
+const KC = 5;
 
 var game = function() {
 	this.canvas = null;
