@@ -509,7 +509,7 @@ var quan = function(game) {
 				this.available[x - 1][y + 1] = 2;
 			} 
 			if(x == 6) {
-				if(this.state[x - 2][y] == 0) {
+				if(this.state[x - 2][y] == 0 && this.state[x - 1][y] == 0) {
 					this.available[x - 2][y] = 1;
 				}
 			}
@@ -525,7 +525,7 @@ var quan = function(game) {
 				this.available[x + 1][y - 1] = 2;
 			}
 			if(x == 1) {
-				if(this.state[x + 2][y] == 0) {
+				if(this.state[x + 2][y] == 0 && this.state[x + 1][y] == 0) {
 					this.available[x + 2][y] = 1;
 				}
 			}
